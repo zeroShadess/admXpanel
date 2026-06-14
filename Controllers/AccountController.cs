@@ -43,31 +43,12 @@ namespace AdminPanel.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Email Doğrulama Linki Oluştur
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Action(
-                        "ConfirmEmail", "Account",
-                        new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    try
-                    {
-                        await _emailSender.SendEmailAsync(model.Email, "E-posta Doğrula - Admin Panel",
-                            $"Hesabınızı doğrulamak için lütfen bu bağlantıya <a href='{callbackUrl}'>tıklayınız</a>.");
-
-                        // Mesajı View'e gönderiyoruz
-                        ViewBag.Message = "Kayıt başarılı! Lütfen hesabınızı doğrulamak için e-posta adresinize gönderilen bağlantıya tıklayın.";
-                        return View("RegisterSuccess");
-                    }
-                    catch
-                    {
-                        // Render.com gibi ortamlarda SMTP engelliyse hata verir.
-                        // Çökmesini önlemek için e-postayı otomatik onaylayıp direkt giriş yaptır.
-                        user.EmailConfirmed = true;
-                        await _userManager.UpdateAsync(user);
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Index", "Home");
-                    }
+                    // E-posta gönderimini tamamen devre dışı bırakıyoruz (beklemeyi ve hatayı önlemek için)
+                    // Kullanıcıyı otomatik onaylı yap ve direkt içeri al
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
                 }
 
                 foreach (var error in result.Errors)

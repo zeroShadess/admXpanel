@@ -69,8 +69,9 @@ using (var scope = app.Services.CreateScope())
     
     if (!string.IsNullOrEmpty(databaseUrl))
     {
-        // Render.com (PostgreSQL) - Migration dosyaları SQL Server için olduğundan
-        // burada tabloları sıfırdan modelden oluşturuyoruz.
+        // Render.com (PostgreSQL)
+        // DİKKAT: Veritabanını sıfırlama isteği üzerine eklendi.
+        db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
     }
     else
