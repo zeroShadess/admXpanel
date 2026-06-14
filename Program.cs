@@ -71,6 +71,7 @@ using (var scope = app.Services.CreateScope())
     {
         // Render.com (PostgreSQL)
         db.Database.EnsureCreated();
+        try { db.Database.ExecuteSqlRaw("ALTER TABLE \"Projects\" ALTER COLUMN \"ImageUrl\" DROP NOT NULL;"); } catch { }
     }
     else
     {

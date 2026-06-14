@@ -17,4 +17,5 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 ENV RENDER=true
 
 EXPOSE 10000
+USER root
 ENTRYPOINT ["dotnet", "AdminPanel.dll"]
