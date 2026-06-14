@@ -62,11 +62,22 @@ builder.Services.AddScoped<IProjectService, ProjectManager>();
 
 var app = builder.Build();
 
-// Otomatik migration (production için)
+// Otomatik migration ve veritabanı oluşturma
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    
+    if (!string.IsNullOrEmpty(databaseUrl))
+    {
+        // Render.com (PostgreSQL) - Migration dosyaları SQL Server için olduğundan
+        // burada tabloları sıfırdan modelden oluşturuyoruz.
+        db.Database.EnsureCreated();
+    }
+    else
+    {
+        // Lokal geliştirme (SQL Server) - Migration'ları uygula
+        db.Database.Migrate();
+    }
 }
 
 // Configure the HTTP request pipeline.
