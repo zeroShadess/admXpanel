@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="text-center mb-4">
+            <h4 class="text-white">Admin Panel</h4>
+        </div>
+        <a asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+        <a asp-controller="Projects" asp-action="Index" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Projects" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")">
+            <i class="bi bi-list-task me-2"></i> Projeler
+        </a>
+        <a asp-controller="Projects" asp-action="Create" class="@(ViewContext.RouteData.Values["Controller"]?.ToString() == "Projects" && ViewContext.RouteData.Values["Action"]?.ToString() == "Create" ? "active" : "")">
+            <i class="bi bi-plus-circle me-2"></i> Yeni Proje Ekle
+        </a>
+    </div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar top-navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-4">
+            <span class="navbar-brand mb-0 h1">@ViewData["Title"]</span>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://ui-avatars.com/api/?name=@(User.Identity?.Name ?? "Admin")&background=0D8ABC&color=fff" alt="mdo" width="32" height="32" class="rounded-circle me-2">
+                        <strong>@(User.Identity?.Name?.Split('@')[0] ?? "Misafir")</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="dropdownUser">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li><a class="dropdown-item" href="#">Ayarlar</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                    <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Giriş Yap</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

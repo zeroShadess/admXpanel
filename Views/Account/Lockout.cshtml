@@ -1,0 +1,16 @@
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Hesap Kilitlendi";
+}
+
+<div class="text-center">
+    <div class="alert alert-danger">
+        <i class="bi bi-shield-lock-fill me-2 fs-4"></i>
+        <h4 class="alert-heading mt-2">Hesabınız Kilitlendi</h4>
+        <p>Çok fazla başarısız giriş denemesi nedeniyle hesabınız geçici olarak kilitlenmiştir. Lütfen daha sonra tekrar deneyin.</p>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-action="Login" class="btn btn-outline-light">Giriş Sayfasına Dön</a>
+    </div>
+</div>

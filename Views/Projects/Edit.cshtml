@@ -1,0 +1,94 @@
+@model AdminPanel.ViewModels.ProjectEditViewModel
+@{
+    ViewData["Title"] = "Projeyi Düzenle";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Projeyi Düzenle: @Model.SiteName</h2>
+    <a asp-action="Index" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Geri Dön</a>
+</div>
+
+<div class="card bg-transparent border-secondary">
+    <div class="card-body">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExistingImageUrl" />
+            
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="SiteName" class="form-label">Site Adı</label>
+                    <input asp-for="SiteName" class="form-control bg-dark text-light border-secondary" required />
+                    <span asp-validation-for="SiteName" class="text-danger"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="SiteUrl" class="form-label">Site URL</label>
+                    <input asp-for="SiteUrl" class="form-control bg-dark text-light border-secondary" required />
+                    <span asp-validation-for="SiteUrl" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control bg-dark text-light border-secondary" rows="3" required></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Status" class="form-label">Durum</label>
+                    <select asp-for="Status" class="form-select bg-dark text-light border-secondary" asp-items="Html.GetEnumSelectList<AdminPanel.Models.ProjectStatus>()"></select>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ImageFile" class="form-label">Yeni Proje Görseli Yükle (Değiştirmek isterseniz)</label>
+                    <input asp-for="ImageFile" class="form-control bg-dark text-light border-secondary" type="file" accept="image/*" />
+                    @if(!string.IsNullOrEmpty(Model.ExistingImageUrl))
+                    {
+                        <div class="mt-2">
+                            <small class="text-muted">Mevcut Görsel:</small>
+                            <img src="@Model.ExistingImageUrl" alt="Mevcut Görsel" style="max-height:50px; display:block;" class="rounded" />
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DailyVisitors" class="form-label">Günlük Ziyaretçi</label>
+                    <input asp-for="DailyVisitors" class="form-control bg-dark text-light border-secondary" type="number" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="TotalVisitors" class="form-label">Toplam Ziyaretçi</label>
+                    <input asp-for="TotalVisitors" class="form-control bg-dark text-light border-secondary" type="number" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Teknolojiler</label>
+                    <div class="bg-dark p-3 rounded border border-secondary">
+                        <div class="row row-cols-2 row-cols-md-4 g-2">
+                            @foreach (var tech in Model.AvailableTechnologies)
+                            {
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="SelectedTechnologyIds" value="@tech.Id" id="tech_@tech.Id" 
+                                        @(Model.SelectedTechnologyIds.Contains(tech.Id) ? "checked" : "")>
+                                        <label class="form-check-label text-light" for="tech_@tech.Id">
+                                            @tech.Name
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+                <button type="submit" class="btn btn-warning"><i class="bi bi-save"></i> Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

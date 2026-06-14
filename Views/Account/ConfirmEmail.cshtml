@@ -1,0 +1,26 @@
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "E-posta Doğrulama";
+}
+
+<div class="text-center">
+    @if (ViewBag.StatusMessage != null)
+    {
+        if (ViewBag.StatusMessage.Contains("başarıyla"))
+        {
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle-fill me-2"></i> @ViewBag.StatusMessage
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.StatusMessage
+            </div>
+        }
+    }
+    
+    <div class="mt-4">
+        <a asp-action="Login" class="btn btn-primary">Giriş Sayfasına Git</a>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+@model AdminPanel.ViewModels.LoginViewModel
+
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <div class="input-group">
+            <span class="input-group-text bg-dark border-secondary text-white"><i class="bi bi-envelope"></i></span>
+            <input asp-for="Email" class="form-control bg-dark border-secondary text-white" placeholder="ornek@mail.com" />
+        </div>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label"></label>
+        <div class="input-group">
+            <span class="input-group-text bg-dark border-secondary text-white"><i class="bi bi-lock"></i></span>
+            <input asp-for="Password" class="form-control bg-dark border-secondary text-white" placeholder="Şifreniz" />
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="mb-4 form-check">
+        <input asp-for="RememberMe" class="form-check-input" />
+        <label asp-for="RememberMe" class="form-check-label text-muted"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100 mb-3">
+        <i class="bi bi-box-arrow-in-right me-2"></i> Giriş Yap
+    </button>
+</form>
+
+<hr class="border-secondary mb-3" />
+
+<form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="mb-3">
+    <input type="hidden" name="provider" value="Google" />
+    <button type="submit" class="btn btn-google w-100">
+        <i class="bi bi-google me-2"></i> Google ile Giriş Yap
+    </button>
+</form>
+
+<div class="text-center">
+    <span class="text-muted">Hesabınız yok mu?</span> <a asp-action="Register" class="text-decoration-none">Kayıt Ol</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

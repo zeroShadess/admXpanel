@@ -1,0 +1,113 @@
+@model IEnumerable<AdminPanel.Models.Project>
+@{
+    ViewData["Title"] = "Projeler";
+    var technologies = ViewBag.Technologies as List<AdminPanel.Models.Technology>;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Projeler</h2>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i> Yeni Proje Ekle</a>
+</div>
+
+<div class="card mb-4 bg-transparent border-secondary">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="searchString" class="form-control bg-dark text-light border-secondary" placeholder="Proje Ara...">
+            </div>
+            <div class="col-md-3">
+                <select name="statusFilter" class="form-select bg-dark text-light border-secondary">
+                    <option value="">Tüm Durumlar</option>
+                    @foreach (var status in Enum.GetValues(typeof(AdminPanel.Models.ProjectStatus)))
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="techFilter" class="form-select bg-dark text-light border-secondary">
+                    <option value="">Tüm Teknolojiler</option>
+                    @if(technologies != null)
+                    {
+                        foreach (var tech in technologies)
+                        {
+                            <option value="@tech.Id">@tech.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-light w-100">Filtrele</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5 text-muted">
+        <i class="bi bi-folder-x display-1"></i>
+        <h4 class="mt-3">Herhangi bir proje bulunamadı.</h4>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    @if(!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" class="card-img-top" alt="@item.SiteName" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-image text-muted fs-1"></i>
+                        </div>
+                    }
+                    
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">@item.SiteName</h5>
+                            <span class="badge badge-@item.Status">@item.Status</span>
+                        </div>
+                        <p class="text-muted small mb-3">
+                            <i class="bi bi-link-45deg"></i> <a href="@item.SiteUrl" target="_blank" class="text-info text-decoration-none">@item.SiteUrl</a>
+                        </p>
+                        <p class="card-text text-truncate">@item.Description</p>
+                        
+                        <div class="mb-3">
+                            @foreach (var pt in item.ProjectTechnologies)
+                            {
+                                <span class="badge tech-badge me-1">@pt.Technology.Name</span>
+                            }
+                        </div>
+                        
+                        <div class="row text-center mb-3">
+                            <div class="col border-end border-secondary">
+                                <small class="text-muted d-block">Günlük</small>
+                                <strong>@item.DailyVisitors</strong>
+                            </div>
+                            <div class="col">
+                                <small class="text-muted d-block">Toplam</small>
+                                <strong>@item.TotalVisitors</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-secondary d-flex justify-content-between">
+                        <small class="text-muted">Son Güncelleme: @item.UpdatedDate.ToString("dd.MM.yyyy")</small>
+                        <div class="btn-group">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Detaylar"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Düzenle"><i class="bi bi-pencil"></i></a>
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Sil"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

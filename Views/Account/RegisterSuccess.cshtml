@@ -1,0 +1,16 @@
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Kayıt Başarılı";
+}
+
+<div class="text-center">
+    <div class="alert alert-success">
+        <i class="bi bi-envelope-check-fill me-2 fs-4"></i>
+        <h4 class="alert-heading mt-2">Kayıt Başarılı!</h4>
+        <p>@ViewBag.Message</p>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-action="Login" class="btn btn-outline-light">Giriş Sayfasına Dön</a>
+    </div>
+</div>

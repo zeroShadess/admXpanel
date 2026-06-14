@@ -1,0 +1,111 @@
+@model AdminPanel.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-primary">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Toplam Proje</h6>
+                <h2 class="text-primary mb-0">@Model.TotalProjects</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-success">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Aktif Proje</h6>
+                <h2 class="text-success mb-0">@Model.ActiveProjects</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-info">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Geliştirilen</h6>
+                <h2 class="text-info mb-0">@Model.DevelopingProjects</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-warning">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Bakımda</h6>
+                <h2 class="text-warning mb-0">@Model.MaintenanceProjects</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-light">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Günlük Ziyaretçi</h6>
+                <h2 class="text-light mb-0">@Model.DailyTotalVisitors</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card h-100 border-light">
+            <div class="card-body text-center">
+                <h6 class="card-title text-muted">Toplam Ziyaretçi</h6>
+                <h2 class="text-light mb-0">@Model.TotalVisitors</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Son Eklenen Projeler</h5>
+                <a asp-controller="Projects" asp-action="Index" class="btn btn-sm btn-outline-secondary">Tümünü Gör</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush rounded-bottom">
+                    @if(Model.RecentlyAdded.Count == 0)
+                    {
+                        <div class="p-4 text-center text-muted">Henüz proje eklenmemiş.</div>
+                    }
+                    @foreach (var p in Model.RecentlyAdded)
+                    {
+                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@p.Id" class="list-group-item list-group-item-action bg-transparent text-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>@p.SiteName</strong>
+                                <br/>
+                                <small class="text-muted">@p.CreatedDate.ToString("dd MMM yyyy")</small>
+                            </div>
+                            <span class="badge badge-@p.Status">@p.Status</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Son Güncellenen Projeler</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush rounded-bottom">
+                    @if(Model.RecentlyUpdated.Count == 0)
+                    {
+                        <div class="p-4 text-center text-muted">Henüz güncellenmiş proje yok.</div>
+                    }
+                    @foreach (var p in Model.RecentlyUpdated)
+                    {
+                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@p.Id" class="list-group-item list-group-item-action bg-transparent text-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>@p.SiteName</strong>
+                                <br/>
+                                <small class="text-muted">@p.UpdatedDate.ToString("dd MMM yyyy")</small>
+                            </div>
+                            <span class="badge badge-@p.Status">@p.Status</span>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

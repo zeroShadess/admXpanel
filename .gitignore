@@ -1,0 +1,42 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## VS Code / VS
+.vscode/
+.vs/
+*.sln
+launchSettings.json
+
+## OS
+Thumbs.db
+*.DS_Store
+
+## User-specific
+appsettings.Development.json
+
+## Uploaded images (runtime generated)
+wwwroot/images/projects/*
+!wwwroot/images/projects/.gitkeep
