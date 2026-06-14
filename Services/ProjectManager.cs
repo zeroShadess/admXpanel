@@ -51,10 +51,10 @@ namespace AdminPanel.Services
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
                 UserId = userId,
-                ProjectTechnologies = model.SelectedTechnologyIds.Select(tId => new ProjectTechnology
+                ProjectTechnologies = model.SelectedTechnologyIds?.Select(tId => new ProjectTechnology
                 {
                     TechnologyId = tId
-                }).ToList()
+                }).ToList() ?? new List<ProjectTechnology>()
             };
 
             _context.Projects.Add(project);
@@ -84,13 +84,16 @@ namespace AdminPanel.Services
 
                 // Update technologies
                 project.ProjectTechnologies.Clear();
-                foreach (var tId in model.SelectedTechnologyIds)
+                if (model.SelectedTechnologyIds != null)
                 {
-                    project.ProjectTechnologies.Add(new ProjectTechnology
+                    foreach (var tId in model.SelectedTechnologyIds)
                     {
-                        ProjectId = project.Id,
-                        TechnologyId = tId
-                    });
+                        project.ProjectTechnologies.Add(new ProjectTechnology
+                        {
+                            ProjectId = project.Id,
+                            TechnologyId = tId
+                        });
+                    }
                 }
 
                 await _context.SaveChangesAsync();

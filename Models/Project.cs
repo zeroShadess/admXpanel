@@ -9,7 +9,7 @@ namespace AdminPanel.Models
         public string SiteName { get; set; }
         public string SiteUrl { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public ProjectStatus Status { get; set; }

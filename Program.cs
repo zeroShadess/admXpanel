@@ -70,6 +70,7 @@ using (var scope = app.Services.CreateScope())
     if (!string.IsNullOrEmpty(databaseUrl))
     {
         // Render.com (PostgreSQL)
+        db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
     }
     else

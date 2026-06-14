@@ -10,7 +10,7 @@ namespace AdminPanel.ViewModels
         public string SiteName { get; set; }
         public string SiteUrl { get; set; }
         public string Description { get; set; }
-        public string ExistingImageUrl { get; set; }
+        public string? ExistingImageUrl { get; set; }
         public IFormFile? ImageFile { get; set; }
         public ProjectStatus Status { get; set; }
         public int DailyVisitors { get; set; }
