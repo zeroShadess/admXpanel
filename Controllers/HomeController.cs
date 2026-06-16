@@ -26,5 +26,12 @@ namespace AdminPanel.Controllers
             var dashboardData = await _projectService.GetDashboardDataAsync(userId);
             return View(dashboardData);
         }
+        [AllowAnonymous]
+        public IActionResult ResetDb([FromServices] AdminPanel.Data.ApplicationDbContext context)
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+            return Content("Veritabanı başarıyla sıfırlandı ve tablolar baştan oluşturuldu!");
+        }
     }
 }
